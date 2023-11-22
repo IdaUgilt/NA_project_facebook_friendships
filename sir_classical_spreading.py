@@ -78,9 +78,6 @@ def sir_classical_spreading(G, beta = 1, gamma = None, starting_nodes = None):
             # Add fraction of infected or removed nodes to time step record
             time_step_infection_rates.setdefault(t, []).append((len(I) + len(R)) / V)
 
-            # Debug printing
-            print(f't: {t}, |S|: {len(S)}, |I|: {len(I)}, |R|: {len(R)}')
-
             # Increment t
             t += 1
 
