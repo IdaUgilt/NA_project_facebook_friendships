@@ -45,11 +45,14 @@ def sir_classical_spreading(G, beta = 1, gamma = None, starting_nodes = None):
         infected_at = {0: {s}} # Only starting node s is infected at time step 0
 
         # Time step iterator
-        t = 1
+        t = 0
 
         # Continue spreading process as long as I is not empty
         # Each iteration of this loop is the actions taken in time step t
         while I:
+
+            # Increment t
+            t += 1
 
             # Keep set of newly infected nodes
             new_infected = set()
@@ -77,9 +80,6 @@ def sir_classical_spreading(G, beta = 1, gamma = None, starting_nodes = None):
 
             # Add fraction of infected or removed nodes to time step record
             time_step_infection_rates.setdefault(t, []).append((len(I) + len(R)) / V)
-
-            # Increment t
-            t += 1
 
     # Average out values in dict of infection rates for each time step t
     time_step_infection_rates = {t: sum(i_r) / len(i_r) for t, i_r in time_step_infection_rates.items()}
