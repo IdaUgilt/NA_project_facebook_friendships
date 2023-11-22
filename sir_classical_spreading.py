@@ -59,7 +59,6 @@ def sir_classical_spreading(G, beta = 1, gamma = None, starting_nodes = None):
 
                 # Check if u gets infected using classical trigger logic
                 n = len(set(G.neighbors(u)) & I) # Amount of infected neighbors of u
-                # print(u, 'infected neighbors:', set(G.neighbors(u)) & I)
                 if random() < 1 - (1 - beta) ** n: 
                     new_infected.add(u)
 
