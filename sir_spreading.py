@@ -278,7 +278,7 @@ def SIR_classical_timestep_beta(G: nx.Graph, gamma: int = 1, starting_nodes = No
 
     return results
 
-def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = 1, gamma: int = 1, starting_nodes = None):
+def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1, starting_nodes = None):
     '''
     Run a SIR spreading process through a given network using threshold triggering 
     determined by constant parameter kappa and beta.
