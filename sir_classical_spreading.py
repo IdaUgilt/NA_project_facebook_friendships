@@ -114,7 +114,7 @@ def SIR_classical_custom_beta(G: nx.Graph, betas: dict = None, gamma: int = 1, s
         betas = {u: .5 for u in G.nodes}
 
     # Check keys in beta match the network nodes
-    elif sorted(list(dict1.keys())) != sorted(list(G.nodes())):
+    elif sorted(list(betas.keys())) != sorted(list(G.nodes())): 
         raise TypeError('Keys in betas do not match G.nodes.')
     
     # Check that no beta value is smaller than 0 or larger than 1
