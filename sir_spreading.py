@@ -365,7 +365,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = 1, gamma: int = 1, 
 
     return results
 
-def SIR_cascade(G: nx.Graph, beta: float = 1, gamma: int = 1, starting_nodes = None):
+def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None):
     '''
     Run a SIR spreading process through a given network using cascade triggering 
     determined by constant parameter beta. Note beta differs in meaning from classical and
