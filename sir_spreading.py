@@ -335,7 +335,8 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
 
             # Iterate over all nodes in S to find new infections
             for u in S:
-
+                
+                
                 # Check if u gets infected using threshold trigger logic
                 n = len(set(G.neighbors(u)) & I) # Amount of infected neighbors of u
                 if n >= kappa and random() <= beta: # Beta probability of infection if kappa threshold passed
