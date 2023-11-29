@@ -62,7 +62,7 @@ def get_starting_nodes(G, metric, n):
 
     return starting_nodes_idx
 
-def get_spreading_data(G, beta, gamma, starting_nodes, trigger, metrics):
+def get_spreading_data(G, beta, gamma, starting_nodes, trigger, metrics, kappa=None):
     '''
     Get data from the spreading proces.
 
@@ -78,7 +78,13 @@ def get_spreading_data(G, beta, gamma, starting_nodes, trigger, metrics):
     d_metrics = {'classical': SIR_classical, 'threshold': SIR_threshold, 'cascade': SIR_cascade}
 
     # Get data for each specified metric
-    d = {f'data_{metric}': d_metrics[trigger](G, beta, gamma, starting_nodes[metric]) for metric in metrics}
+    if trigger == 'classical' or trigger == 'cascade':
+        d = {f'data_{metric}': d_metrics[trigger](G, beta, gamma, starting_nodes[metric]) for metric in metrics}
+    elif trigger == 'threshold':
+        d = {f'data_{metric}': d_metrics[trigger](G, kappa, beta, gamma, starting_nodes[metric]) for metric in metrics}
+    else:
+        print('Trigger type is not supported!')
+        return
 
     return d
 
