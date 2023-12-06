@@ -31,8 +31,12 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
     elif type(starting_nodes) == int or type(starting_nodes) == str:
         starting_nodes = [starting_nodes]
 
-    # Keep dictionary of fraction of infected and revomed nodes for each time step
-    time_step_infection_rates = {0: [1/V]} # Time step 0 will always only have one infected node (the starting node)
+    # Keep dictionary of shares of nodes in each state for each time step t
+    time_step_rates = {0: { # Initialize with only t = 0
+        'S': [(V-1)/V], # List of shares of S nodes, one entry for each starting node
+        'I': [1/V], # List of shares of I nodes, one entry for each starting node
+        'R': [0.0] # List of shares of R nodes, one entry for each starting node
+    }}
 
     # Run complete spreading process for each starting node
     for s in starting_nodes:
@@ -79,14 +83,23 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
                 R = R.union(to_transition)
                 I -= to_transition
 
-            # Add fraction of infected or removed nodes to time step record
-            time_step_infection_rates.setdefault(t, []).append((len(I) + len(R)) / V)
+            # Add fraction of S, I, and R nodes to time step record
+            # Set defualt if time step t not reached before
+            time_step_rates.setdefault(t, {'S': [], 'I': [], 'R': []})['S'].append(len(S) / V) # Add share of nodes in S
+            time_step_rates[t]['I'].append(len(I) / V) # Add share of nodes in I
+            time_step_rates[t]['R'].append(len(R) / V) # Add share of nodes in R
 
     # Average out values in dict of infection rates for each time step t
-    time_step_infection_rates = {t: sum(i_r) / len(i_r) for t, i_r in time_step_infection_rates.items()}
+    # time_step_rates = {t: sum(i_r) / len(i_r) for t, i_r in time_step_rates.items()}
 
-    # Create Data Frame of infection rates for each time step t
-    results = pd.DataFrame(list(time_step_infection_rates.items()), columns = ['t', 'IR'])
+    # Average out values in dict of S, I, and R rates for each time step t
+    for t, rates in time_step_rates.items():
+        time_step_rates[t]['S'] = sum(rates['S']) / len(rates['S'])
+        time_step_rates[t]['I'] = sum(rates['I']) / len(rates['I'])
+        time_step_rates[t]['R'] = sum(rates['R']) / len(rates['R'])
+
+    # Create Data Frame of S, I, and R rates for each time step t
+    results = pd.DataFrame([{'t': t, 'SR': rates['S'], 'IR': rates['I'], 'RR': rates['R']} for t, rates in time_step_rates.items()])
 
     return results
 
@@ -336,7 +349,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
             # Iterate over all nodes in S to find new infections
             for u in S:
                 
-                if t==1:
+                if t == 1:
                     # Check if u gets infected using threshold trigger logic
                     n = len(set(G.neighbors(u)) & I) # Amount of infected neighbors of u
                     if n >= 1 and random() <= beta: # Beta probability of infection if kappa threshold passed
@@ -432,9 +445,8 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
                 # Check if u gets infected using cascade trigger logic
                 n_total = len(list(G.neighbors(u))) # Amount of total neighbors of u
                 n_infected = len(set(G.neighbors(u)) & I) # Amount of infected neighbors of u
-                if n_total > 0:
-                    if n_infected / n_total >= beta:
-                        new_infected.add(u)
+                if n_infected / n_total >= beta:
+                    new_infected.add(u)
 
             # Add new infected nodes to I and remove from S
             I = I.union(new_infected)
