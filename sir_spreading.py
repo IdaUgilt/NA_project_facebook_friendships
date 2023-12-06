@@ -4,6 +4,14 @@ import pandas as pd
 import networkx as nx
 from random import random
 
+# Helper functions
+
+def avg(X):
+    '''Return avarage of input array or list X'''
+    return sum(X) / len(X)
+
+# SIR model spreading functions
+
 def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None):
     '''
     Run a SIR spreading process through a given network using classical triggering 
@@ -91,10 +99,10 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
 
     # Average out values in dict of S, I, and R rates for each time step t and format as Data Frame
     results = pd.DataFrame([{'t': t, 
-                             'SR': sum(rates['S']) / len(rates['S']), 
-                             'IR': sum(rates['I']) / len(rates['I']), 
-                             'RR': sum(rates['R']) / len(rates['R']), 
-                             'IR+RR': sum(rates['I']) / len(rates['I']) + sum(rates['R']) / len(rates['R'])} for t, rates in time_step_rates.items()])
+                             'SR': avg(rates['S']), 
+                             'IR': avg(rates['I']), 
+                             'RR': avg(rates['R']), 
+                             'IR+RR': avg(rates['I']) + avg(rates['R'])} for t, rates in time_step_rates.items()])
 
     return results
 
@@ -192,10 +200,10 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
 
     # Average out values in dict of S, I, and R rates for each time step t and format as Data Frame
     results = pd.DataFrame([{'t': t, 
-                             'SR': sum(rates['S']) / len(rates['S']), 
-                             'IR': sum(rates['I']) / len(rates['I']), 
-                             'RR': sum(rates['R']) / len(rates['R']), 
-                             'IR+RR': sum(rates['I']) / len(rates['I']) + sum(rates['R']) / len(rates['R'])} for t, rates in time_step_rates.items()])
+                             'SR': avg(rates['S']), 
+                             'IR': avg(rates['I']), 
+                             'RR': avg(rates['R']), 
+                             'IR+RR': avg(rates['I']) + avg(rates['R'])} for t, rates in time_step_rates.items()])
 
     return results
 
@@ -288,9 +296,9 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
 
     # Average out values in dict of S, I, and R rates for each time step t and format as Data Frame
     results = pd.DataFrame([{'t': t, 
-                             'SR': sum(rates['S']) / len(rates['S']), 
-                             'IR': sum(rates['I']) / len(rates['I']), 
-                             'RR': sum(rates['R']) / len(rates['R']), 
-                             'IR+RR': sum(rates['I']) / len(rates['I']) + sum(rates['R']) / len(rates['R'])} for t, rates in time_step_rates.items()])
+                             'SR': avg(rates['S']), 
+                             'IR': avg(rates['I']), 
+                             'RR': avg(rates['R']), 
+                             'IR+RR': avg(rates['I']) + avg(rates['R'])} for t, rates in time_step_rates.items()])
 
     return results
