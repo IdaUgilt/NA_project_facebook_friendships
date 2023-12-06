@@ -75,13 +75,13 @@ def get_spreading_data(G, beta, gamma, starting_nodes, trigger, metrics, kappa=N
     '''
 
     # Dictionary connecting trigger mechanism and spreading model
-    d_metrics = {'classical': SIR_classical, 'threshold': SIR_threshold, 'cascade': SIR_cascade}
+    d_model = {'classical': SIR_classical, 'threshold': SIR_threshold, 'cascade': SIR_cascade}
 
     # Get data for each specified metric
     if trigger == 'classical' or trigger == 'cascade':
-        d = {f'data_{metric}': d_metrics[trigger](G, beta, gamma, starting_nodes[metric]) for metric in metrics}
+        d = {f'{metric}': d_model[trigger](G, beta, gamma, starting_nodes[metric]) for metric in metrics}
     elif trigger == 'threshold':
-        d = {f'data_{metric}': d_metrics[trigger](G, kappa, beta, gamma, starting_nodes[metric]) for metric in metrics}
+        d = {f'{metric}': d_model[trigger](G, kappa, beta, gamma, starting_nodes[metric]) for metric in metrics}
     else:
         print('Trigger type is not supported!')
         return
@@ -94,6 +94,6 @@ def visualise_spreading(data, custom_palette, ax):
 
     # Create graph
     for i, metric in enumerate(metrics):
-        sns.lineplot(data=data[metric], x='t', y='IR', label=f'{metric}', color=custom_palette[i], ax=ax)
+        sns.lineplot(data=data[metric], x='t', y='IR', label=capitalize(f'{metric}'), color=custom_palette[i], ax=ax)
 
 
