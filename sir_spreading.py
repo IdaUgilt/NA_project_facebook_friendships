@@ -154,7 +154,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
 
         # Time step iterator
         t = 0
-
+        
         # Continue spreading process as long as I is not empty
         # Each iteration of this loop is the actions taken in time step t
         while I:
