@@ -94,6 +94,6 @@ def visualise_spreading(data, custom_palette, ax):
 
     # Create graph
     for i, metric in enumerate(metrics):
-        sns.lineplot(data=data[metric], x='t', y='IR', label=capitalize(f'{metric}'), color=custom_palette[i], ax=ax)
+        sns.lineplot(data=data[metric], x='t', y='IR', label=f'{metric}', color=custom_palette[i], ax=ax)
 
 
