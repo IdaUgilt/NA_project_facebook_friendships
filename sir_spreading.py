@@ -272,8 +272,9 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
                 # Check if u gets infected using cascade trigger logic
                 n_total = len(list(G.neighbors(u))) # Amount of total neighbors of u
                 n_infected = len(set(G.neighbors(u)) & I) # Amount of infected neighbors of u
-                if n_infected / n_total >= beta:
-                    new_infected.add(u)
+                if n_total > 0:
+                    if n_infected / n_total >= beta:
+                        new_infected.add(u)
 
             # Add new infected nodes to I and remove from S
             I = I.union(new_infected)
