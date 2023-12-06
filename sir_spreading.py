@@ -89,18 +89,12 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
             time_step_rates[t]['I'].append(len(I) / V) # Add share of nodes in I
             time_step_rates[t]['R'].append(len(R) / V) # Add share of nodes in R
 
-    # Average out values in dict of S, I, and R rates for each time step t
-    for t, rates in time_step_rates.items():
-        time_step_rates[t]['S'] = sum(rates['S']) / len(rates['S'])
-        time_step_rates[t]['I'] = sum(rates['I']) / len(rates['I'])
-        time_step_rates[t]['R'] = sum(rates['R']) / len(rates['R'])
-
-    # Create Data Frame of S, I, and R rates for each time step t
+    # Average out values in dict of S, I, and R rates for each time step t and format as Data Frame
     results = pd.DataFrame([{'t': t, 
-                             'SR': rates['S'], 
-                             'IR': rates['I'], 
-                             'RR': rates['R'], 
-                             'IR+RR': rates['I'] + rates['R']} for t, rates in time_step_rates.items()])
+                             'SR': sum(rates['S']) / len(rates['S']), 
+                             'IR': sum(rates['I']) / len(rates['I']), 
+                             'RR': sum(rates['R']) / len(rates['R']), 
+                             'IR+RR': sum(rates['I']) / len(rates['I']) + sum(rates['R']) / len(rates['R'])} for t, rates in time_step_rates.items()])
 
     return results
 
@@ -196,17 +190,12 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
             time_step_rates[t]['I'].append(len(I) / V) # Add share of nodes in I
             time_step_rates[t]['R'].append(len(R) / V) # Add share of nodes in R
 
-    # Average out values in dict of S, I, and R rates for each time step t
-    for t, rates in time_step_rates.items():
-        time_step_rates[t]['S'] = sum(rates['S']) / len(rates['S'])
-        time_step_rates[t]['I'] = sum(rates['I']) / len(rates['I'])
-        time_step_rates[t]['R'] = sum(rates['R']) / len(rates['R'])
-
+    # Average out values in dict of S, I, and R rates for each time step t and format as Data Frame
     results = pd.DataFrame([{'t': t, 
-                             'SR': rates['S'], 
-                             'IR': rates['I'], 
-                             'RR': rates['R'], 
-                             'IR+RR': rates['I'] + rates['R']} for t, rates in time_step_rates.items()])
+                             'SR': sum(rates['S']) / len(rates['S']), 
+                             'IR': sum(rates['I']) / len(rates['I']), 
+                             'RR': sum(rates['R']) / len(rates['R']), 
+                             'IR+RR': sum(rates['I']) / len(rates['I']) + sum(rates['R']) / len(rates['R'])} for t, rates in time_step_rates.items()])
 
     return results
 
@@ -297,16 +286,11 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
             time_step_rates[t]['I'].append(len(I) / V) # Add share of nodes in I
             time_step_rates[t]['R'].append(len(R) / V) # Add share of nodes in R
 
-    # Average out values in dict of S, I, and R rates for each time step t
-    for t, rates in time_step_rates.items():
-        time_step_rates[t]['S'] = sum(rates['S']) / len(rates['S'])
-        time_step_rates[t]['I'] = sum(rates['I']) / len(rates['I'])
-        time_step_rates[t]['R'] = sum(rates['R']) / len(rates['R'])
-
+    # Average out values in dict of S, I, and R rates for each time step t and format as Data Frame
     results = pd.DataFrame([{'t': t, 
-                             'SR': rates['S'], 
-                             'IR': rates['I'], 
-                             'RR': rates['R'], 
-                             'IR+RR': rates['I'] + rates['R']} for t, rates in time_step_rates.items()])
+                             'SR': sum(rates['S']) / len(rates['S']), 
+                             'IR': sum(rates['I']) / len(rates['I']), 
+                             'RR': sum(rates['R']) / len(rates['R']), 
+                             'IR+RR': sum(rates['I']) / len(rates['I']) + sum(rates['R']) / len(rates['R'])} for t, rates in time_step_rates.items()])
 
     return results
