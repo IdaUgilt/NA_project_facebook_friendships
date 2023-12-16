@@ -12,7 +12,7 @@ def avg(X):
 
 # SIR model spreading functions
 
-def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = None):
+def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = []):
     '''
     Run a SIR spreading process through a given network using classical triggering 
     determined by constant parameter beta.
@@ -107,7 +107,7 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
 
     return results
 
-def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = set()):
+def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = []):
     '''
     Run a SIR spreading process through a given network using threshold triggering 
     determined by constant parameter kappa and beta.
@@ -209,7 +209,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
 
     return results
 
-def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = set()):
+def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = []):
     '''
     Run a SIR spreading process through a given network using cascade triggering 
     determined by constant parameter beta. Note beta differs in meaning from classical and
