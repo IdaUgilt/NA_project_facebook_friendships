@@ -12,7 +12,7 @@ def avg(X):
 
 # SIR model spreading functions
 
-def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None):
+def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = None):
     '''
     Run a SIR spreading process through a given network using classical triggering 
     determined by constant parameter beta.
@@ -23,6 +23,7 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
         beta (float): probability of infected node infecting neighbors
         gamma (int): time steps taken before node in I transitions to R (stops attempting to infect further)
         starting_nodes (int or list of ints): starting node(s) to use for spreading process
+        immune_nodes (list or set): list or set of nodes to make immune
 
     Returns:
         results (pd.DataFrame): Data Frama containing time steps and corresponding fraction of nodes infected.
@@ -43,7 +44,7 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
     time_step_rates = {0: { # Initialize with only t = 0
         'S': [(V-1)/V], # List of shares of S nodes, one entry for each starting node
         'I': [1/V], # List of shares of I nodes, one entry for each starting node
-        'R': [0.0] # List of shares of R nodes, one entry for each starting node
+        'R': [len(immune_nodes)/V] # List of shares of R nodes, one entry for each starting node
     }}
 
     # Run complete spreading process for each starting node
@@ -52,7 +53,7 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
         # Keep sets of nodes in each state
         S = set(G.nodes) - {s} # Initialize S as all nodes except starting node s
         I = {s} # Initialize I as only containing starting node
-        R = set() # Initialize R as empty
+        R = set(immune_nodes) # Initialize R as only contain the nodes which have been immunised 
 
         # Keep dict of nodes infected at each time step determine transition from I to R
         infected_at = {0: {s}} # Only starting node s is infected at time step 0
@@ -106,7 +107,7 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
 
     return results
 
-def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1, starting_nodes = None):
+def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = set()):
     '''
     Run a SIR spreading process through a given network using threshold triggering 
     determined by constant parameter kappa and beta.
@@ -118,7 +119,8 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
         beta (float): probability of infection once kappa threshold has been passed
         gamma (int): time steps taken before node in I transitions to R (stops attempting to infect further)
         starting_nodes (int or list of ints): starting node(s) to use for spreading process
-
+        immune_nodes (list or set): list or set of nodes to make immune
+        
     Returns:
         results (pd.DataFrame): Data Frama containing time steps and corresponding fraction of nodes infected.
     '''
@@ -138,7 +140,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
     time_step_rates = {0: { # Initialize with only t = 0
         'S': [(V-1)/V], # List of shares of S nodes, one entry for each starting node
         'I': [1/V], # List of shares of I nodes, one entry for each starting node
-        'R': [0.0] # List of shares of R nodes, one entry for each starting node
+        'R': [len(immune_nodes)/V] # List of shares of R nodes, one entry for each starting node
     }}
 
     # Run complete spreading process for each starting node
@@ -147,7 +149,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
         # Keep sets of nodes in each state
         S = set(G.nodes) - {s} # Initialize S as all nodes except starting node s
         I = {s} # Initialize I as only containing starting node
-        R = set() # Initialize R as empty
+        R = set(immune_nodes) # Initialize R as only contain the nodes which have been immunised 
 
         # Keep dict of nodes infected at each time step determine transition from I to R
         infected_at = {0: {s}} # Only starting node s is infected at time step 0
@@ -207,7 +209,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
 
     return results
 
-def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None):
+def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = None, immune_nodes = set()):
     '''
     Run a SIR spreading process through a given network using cascade triggering 
     determined by constant parameter beta. Note beta differs in meaning from classical and
@@ -219,6 +221,7 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
         beta (float): fraction of neighbors being infected needed to infect a node
         gamma (int): time steps taken before node in I transitions to R (stops attempting to infect further)
         starting_nodes (int or list of ints): starting node(s) to use for spreading process
+        immune_nodes (list or set): list or set of nodes to make immune
 
     Returns:
         results (pd.DataFrame): Data Frama containing time steps and corresponding fraction of nodes infected.
@@ -239,7 +242,7 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
     time_step_rates = {0: { # Initialize with only t = 0
         'S': [(V-1)/V], # List of shares of S nodes, one entry for each starting node
         'I': [1/V], # List of shares of I nodes, one entry for each starting node
-        'R': [0.0] # List of shares of R nodes, one entry for each starting node
+        'R': [len(immune_nodes)/V] # List of shares of R nodes, one entry for each starting node
     }}
 
     # Run complete spreading process for each starting node
@@ -248,7 +251,7 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
         # Keep sets of nodes in each state
         S = set(G.nodes) - {s} # Initialize S as all nodes except starting node s
         I = {s} # Initialize I as only containing starting node
-        R = set() # Initialize R as empty
+        R = set(immune_nodes) # Initialize R as only contain the nodes which have been immunised 
 
         # Keep dict of nodes infected at each time step determine transition from I to R
         infected_at = {0: {s}} # Only starting node s is infected at time step 0
