@@ -51,7 +51,7 @@ def SIR_classical(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes 
     for s in starting_nodes:
         
         # Keep sets of nodes in each state
-        S = set(G.nodes) - {s} # Initialize S as all nodes except starting node s
+        S = set(G.nodes) - {s} - set(immune_nodes) # Initialize S as all nodes except starting node s and immune nodes
         I = {s} # Initialize I as only containing starting node
         R = set(immune_nodes) # Initialize R as only contain the nodes which have been immunised 
 
@@ -147,7 +147,7 @@ def SIR_threshold(G: nx.Graph, kappa: int = 1, beta: float = .5, gamma: int = 1,
     for s in starting_nodes:
         
         # Keep sets of nodes in each state
-        S = set(G.nodes) - {s} # Initialize S as all nodes except starting node s
+        S = set(G.nodes) - {s} - set(immune_nodes) # Initialize S as all nodes except starting node s and immune nodes
         I = {s} # Initialize I as only containing starting node
         R = set(immune_nodes) # Initialize R as only contain the nodes which have been immunised 
 
@@ -249,7 +249,7 @@ def SIR_cascade(G: nx.Graph, beta: float = .5, gamma: int = 1, starting_nodes = 
     for s in starting_nodes:
         
         # Keep sets of nodes in each state
-        S = set(G.nodes) - {s} # Initialize S as all nodes except starting node s
+        S = set(G.nodes) - {s} - set(immune_nodes) # Initialize S as all nodes except starting node s and immune nodes
         I = {s} # Initialize I as only containing starting node
         R = set(immune_nodes) # Initialize R as only contain the nodes which have been immunised 
 
